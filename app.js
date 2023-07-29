@@ -21,9 +21,20 @@ app.use(
 );
 
 
-mongoose.connect(process.env.CONNECT, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }, (e) => {
-	console.log(e ? e : "Connected successfully to database");
-});
+const connectToDatabase = async () => {
+  try {
+    await mongoose.connect(process.env.CONNECT, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    });
+    console.log("Connected successfully to database");
+  } catch (error) {
+    console.error("Error occurred while connecting to database:", error.message);
+  }
+};
+
+connectToDatabase();
 
 app.use("/auth", require("./routers/authRouter"));
 app.use("/user", require("./routers/userRouter"));
